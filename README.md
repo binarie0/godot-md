@@ -1,9 +1,10 @@
 # Godot MD Previewer
-**Version:** 1.0.0 | **Author:** Sebastian Pavel | **Godot:** 4.4+
 
-A lightweight Markdown previewer addon for **Godot 4.4+** that renders `.md` files directly inside the editor, with multi-tab support and auto-reload.
+**Version:** 1.1.0 | **Author:** Sebastian Pavel | **Godot:** 4.4+
 
-![Godot 4.4](https://img.shields.io/badge/Godot-4.4%2B-blue) ![License](https://img.shields.io/badge/license-MIT-green) ![Pure GDScript](https://img.shields.io/badge/pure-GDScript-orange)
+A lightweight Markdown previewer addon for **Godot 4.4+** that renders `.md` files directly inside the editor, with multi-tab support, auto-reload, and image rendering.
+
+![Godot 4.4](https://img.shields.io/badge/Godot-4.4%2B-blue) ![License](https://img.shields.io/badge/license-MIT-green) ![Pure GDScript](https://img.shields.io/badge/pure-GDScript-orange) ![Version](https://img.shields.io/badge/version-1.1.0-purple)
 
 ## Features
 
@@ -11,7 +12,9 @@ A lightweight Markdown previewer addon for **Godot 4.4+** that renders `.md` fil
 - 🗂️ Multiple files open in tabs simultaneously
 - 🔄 Auto-reloads if the file changes on disk (every 2 seconds)
 - 🔁 Manual reload button
-- No external dependencies — pure GDScript, uses `RichTextLabel` + BBCode
+- 🖼️ Local and external image rendering (PNG, JPG, WebP, BMP) with auto-retry
+- 🔍 Selectable text
+- No external dependencies, only GDScript, uses `RichTextLabel` + BBCode
 
 ## Supported Markdown
 
@@ -29,12 +32,14 @@ A lightweight Markdown previewer addon for **Godot 4.4+** that renders `.md` fil
 | `1. item` | Numbered list |
 | `---` | Horizontal rule |
 | `[text](url)` | Styled link text |
+| `![alt](path)` | Local and external images |
 
 ## Known Limitations
 
 - Tables are not rendered (shown as raw text) — coming in a future update
-- Images show as placeholder text
 - Links are styled but not clickable in the editor context
+- GIF images are not supported — Godot 4 has no native GIF decoder
+- External images over HTTPS may show TLS errors in the Godot console on first load — this is a [known Godot engine limitation](https://github.com/godotengine/godot/issues/101910). The plugin retries automatically and images will load within a few seconds
 
 ## Installation
 
@@ -47,7 +52,7 @@ A lightweight Markdown previewer addon for **Godot 4.4+** that renders `.md` fil
 | Action | How |
 |--------|-----|
 | Open a file | Click **📂 Open File** |
-| Open another file | Click **📂 Open File** again — opens in a new tab |
+| Open another file | Click **📂 Open File** again -> opens in a new tab |
 | Switch tabs | Click tab headers |
 | Close a tab | Click **✕ Close Tab** button |
 | Force reload | Click **🔄 Reload** |
@@ -59,7 +64,7 @@ A lightweight Markdown previewer addon for **Godot 4.4+** that renders `.md` fil
 addons/md_previewer/
 ├── plugin.cfg              # Addon metadata
 ├── plugin.gd               # EditorPlugin entry point
-├── md_previewer_panel.gd   # Panel logic (tabs, file loading, auto-reload)
+├── md_previewer_panel.gd   # Panel logic (tabs, file loading, auto-reload, image loading)
 ├── md_previewer_panel.tscn # Panel scene
 └── markdown_parser.gd      # MD → BBCode converter
 ```
