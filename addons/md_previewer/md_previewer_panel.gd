@@ -102,6 +102,7 @@ func _make_preview_rtl() -> RichTextLabel:
 	rtl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	rtl.add_theme_font_size_override("normal_font_size", 14)
 	rtl.add_theme_color_override("default_color", Color(0.88, 0.88, 0.88))
+	rtl.meta_clicked.connect(_get_meta);
 	return rtl
 
 
@@ -110,6 +111,7 @@ func _add_empty_tab() -> void:
 		tab_container.tab_changed.disconnect(_on_tab_changed)
 	var rtl := _make_preview_rtl()
 	tab_container.add_child(rtl)
+	
 	tab_container.set_tab_title(tab_container.get_tab_count() - 1, "Welcome")
 	tab_data.append({ "path": "", "mtime": 0, "bbcode": "", "images": [], "pending_images": 0 })
 	rtl.parse_bbcode(EMPTY_LABEL)
@@ -658,3 +660,12 @@ func _on_image_failed_with_message(tab_idx: int, image_id: int, message: String)
 			break
 	tab_data[tab_idx]["pending_images"] = max(0, (tab_data[tab_idx]["pending_images"] as int) - 1)
 	_rebuild_tab_bbcode(tab_idx)
+
+func _get_meta(data:String):
+	if (data.ends_with(".md")):
+		var current_idx = tab_container.current_tab;
+		var path_absolute:String = tab_data[current_idx]["path"];
+		_load_file(path_absolute.get_base_dir() + "/" + data);
+	else:
+		OS.shell_open(data);
+		pass;

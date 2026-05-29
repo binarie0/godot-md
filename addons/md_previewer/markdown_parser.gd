@@ -131,9 +131,7 @@ static func _inline(text: String, images: Array[Dictionary]) -> String:
 		var placeholder := "IMG_PLACEHOLDER_%d" % id
 		result = result.substr(0, m.get_start()) + placeholder + result.substr(m.get_end())
 
-	# NOW escape brackets — placeholders use [[ ]] so they survive this
-	result = result.replace("[", "[lb]")
-
+	
 	# Links also before bracket escape would be better, but links use []()
 	# so they need to be extracted too — do it here after image extraction
 	var link_regex := RegEx.new()
@@ -142,9 +140,13 @@ static func _inline(text: String, images: Array[Dictionary]) -> String:
 	for i in range(link_results.size() - 1, -1, -1):
 		var m := link_results[i]
 		var link_text: String = m.get_string(1)
-		var replacement := "[color=#7aa2f7][u]%s[/u][/color]" % link_text
+		var link:String = m.get_string(2);
+		
+		var replacement := "[url=%s]%s[/url]" % [link, link_text]
 		result = result.substr(0, m.get_start()) + replacement + result.substr(m.get_end())
-
+		
+	# NOW escape brackets — placeholders use [[ ]] so they survive this
+	#result = result.replace("[", "[lb]")
 	# Inline code
 	result = _replace_pattern(result, "`([^`]+)`",
 		"[font_size=12][color=#a6e3a1][bgcolor=#1e2030] $1 [/bgcolor][/color][/font_size]")
@@ -163,15 +165,20 @@ static func _inline(text: String, images: Array[Dictionary]) -> String:
 
 	# Strikethrough
 	result = _replace_pattern(result, r"~~(.+?)~~", "[s]$1[/s]")
+	
+	
 
 	return result
 
 
-static func _replace_pattern(text: String, pattern: String, replacement: String) -> String:
+static func _replace_pattern(text: String, pattern: String, replacement: String, announce:bool = false) -> String:
 	var regex := RegEx.new()
 	if regex.compile(pattern) != OK:
 		return text
-	return regex.sub(text, replacement, true)
+	var ret := regex.sub(text, replacement, true);
+	if (announce):
+		print(ret);
+	return ret
 
 
 static func _ul_match(line: String) -> String:
