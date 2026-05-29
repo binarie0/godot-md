@@ -39,7 +39,6 @@ A lightweight Markdown previewer addon for **Godot 4.4+** that renders `.md` fil
 
 - Tables are not rendered (shown as raw text) — coming in a future update
 - GIF images are not supported — Godot 4 has no native GIF decoder
-- External images over HTTPS may show TLS errors in the Godot console on first load — this is a [known Godot engine limitation](https://github.com/godotengine/godot/issues/101910). The plugin retries automatically and images will load within a few seconds
 
 ## Installation
 
