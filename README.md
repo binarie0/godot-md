@@ -1,6 +1,6 @@
 # Godot MD Previewer
 
-**Version:** 1.1.0 | **Author:** Sebastian Pavel | **Godot:** 4.4+
+**Version:** 1.1.0 | **Author:** Sebastian Pavel (feat. binarie) | **Godot:** 4.4+
 
 A lightweight Markdown previewer addon for **Godot 4.4+** that renders `.md` files directly inside the editor, with multi-tab support, auto-reload, and image rendering.
 
