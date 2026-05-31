@@ -2,6 +2,7 @@
 extends Control
 class_name Markdown_Preview_Panel
 
+# The panels that are going to be saved when we save our session.
 var panels:Array[String] =[];
 ## Markdown Previewer Panel
 ## Manages multiple MD file tabs, renders BBCode, and async-loads images.
@@ -106,6 +107,7 @@ func _make_button(label: String, color: Color) -> Button:
 
 func _make_preview_rtl() -> RichTextLabel:
 	var rtl := RichTextLabel.new()
+	rtl.threaded = true
 	rtl.bbcode_enabled = true
 	rtl.fit_content = false
 	rtl.scroll_active = true
@@ -119,7 +121,6 @@ func _make_preview_rtl() -> RichTextLabel:
 	rtl.meta_clicked.connect(_get_meta);
 	rtl.meta_hover_started.connect(_meta_tooltip_hover);
 	rtl.meta_hover_ended.connect(_meta_tooltip_unhover);
-	
 	return rtl
 
 
@@ -560,7 +561,7 @@ func _save_current() -> void:
 	var lineEdit = tab_container.get_current_tab_control().get_child(0) as TextEdit;
 	tab_container.get_current_tab_control().remove_child(lineEdit);
 	
-	var new_md = lineEdit.text;
+	var new_md = lineEdit.text.strip_edges();
 	
 	var path = tab_data[idx]["path"];
 	_save_to_file_known(path, new_md);
