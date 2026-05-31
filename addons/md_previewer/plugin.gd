@@ -10,7 +10,7 @@ var localFolder = "user://.local"
 var panel: Markdown_Preview_Panel
 
 func _enter_tree() -> void:
-	panel = preload("res://addons/godot_md/md_previewer_panel.tscn").instantiate() as Markdown_Preview_Panel;
+	panel = preload("res://addons/md_previewer/md_previewer_panel.tscn").instantiate() as Markdown_Preview_Panel;
 	add_control_to_bottom_panel(panel, "MD Preview")
 	# _remove_md_from_script_editor();
 	load_data(panel);
